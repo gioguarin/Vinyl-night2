@@ -51,6 +51,10 @@ Host auth is a per-event `hostKey` (returned exactly once at creation) — no ac
 
 SSE + the in-process event bus want a **persistent Node host** (Linode box, Fly, Railway, a `next start` behind Caddy). On serverless the app still works — clients just land on the polling fallback. Swap SQLite for Postgres by changing the datasource + `DATABASE_URL` when you outgrow one box.
 
+### GitHub Pages (static demo)
+
+GitHub Pages can't run the server side (API routes, SQLite, SSE), so `.github/workflows/deploy-pages.yml` publishes a **static demo** instead: the public pages rendered from fixture data in `src/lib/demo-fixtures.ts`, with the host console and APIs stripped. It deploys automatically on every push to `main` (first run auto-enables Pages). Build it locally with `scripts/build-demo.sh` → `.demo-build/out`.
+
 ## Working on it with Claude Code
 
 `PLAN.md` is the build plan; `.claude/agents/` ships five subagents (backend-dev, frontend-dev, integrations-dev, code-reviewer, qa-tester, all pinned to Opus). Phase prompts live in PLAN.md §8. `npm run test` (Vitest, pure logic) and `npm run build` are the gates.
