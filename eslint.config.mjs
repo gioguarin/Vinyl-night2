@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Local static-demo build tree (scripts/build-demo.sh).
+    ".demo-build/**",
+    "docs/**",
   ]),
 ]);
 

@@ -1,16 +1,19 @@
 import type { TrackView } from "./NowPlayingCard";
 
-function timeOf(t: string | Date) {
-  return new Date(t).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+function timeOf(t: string | Date, timeZone?: string) {
+  return new Date(t).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", timeZone });
 }
 
 /** Set log: mono timestamps carry real information (when each record dropped). */
 export default function TrackList({
   tracks,
   emptyText = "Nothing recognized yet.",
+  timeZone,
 }: {
   tracks: TrackView[];
   emptyText?: string;
+  /** Fix the timestamps to one zone (static demo); default is the renderer's zone. */
+  timeZone?: string;
 }) {
   if (tracks.length === 0) {
     return <p className="text-sm text-muted">{emptyText}</p>;
@@ -26,7 +29,9 @@ export default function TrackList({
             <span className="font-medium">{t.title}</span>
             <span className="text-muted"> — {t.artist}</span>
           </span>
-          <span className="font-mono text-xs text-muted shrink-0">{timeOf(t.recognizedAt)}</span>
+          <span className="font-mono text-xs text-muted shrink-0">
+            {timeOf(t.recognizedAt, timeZone)}
+          </span>
         </li>
       ))}
     </ol>

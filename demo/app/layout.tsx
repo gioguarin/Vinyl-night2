@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { demoRepoUrl } from "@/lib/demo-fixtures";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -16,11 +17,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className="min-h-screen">
         <div className="border-b border-line bg-surface px-6 py-2 text-center font-mono text-xs text-muted">
           Static demo — live recognition, RSVPs and the projector feed need the real app.{" "}
-          <a
-            href="https://github.com/gioguarin/Vinyl-night2"
-            className="text-amber hover:underline"
-          >
-            github.com/gioguarin/Vinyl-night2
+          <a href={demoRepoUrl} className="text-amber hover:underline">
+            {demoRepoUrl.replace(/^https?:\/\//, "")}
           </a>
         </div>
         {children}

@@ -31,4 +31,7 @@ cp -a demo/app/. "$BUILD_DIR/src/app/"
 
 (cd "$BUILD_DIR" && DEMO_STATIC=1 npm run build)
 
+# Pages' branch-based deploys run Jekyll, which ignores _next/ without this.
+touch "$BUILD_DIR/out/.nojekyll"
+
 echo "Static demo written to $BUILD_DIR/out"

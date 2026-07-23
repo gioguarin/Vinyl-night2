@@ -4,14 +4,13 @@
  * that render these instead — no database, no API routes.
  */
 
-export interface DemoTrack {
-  id: string;
-  title: string;
-  artist: string;
-  album?: string | null;
-  artworkUrl?: string | null;
-  recognizedAt: string;
-}
+import type { TrackView } from "@/components/NowPlayingCard";
+
+/** The fixtures encode evening times at these venues; the static build must not
+ * render them in the CI runner's timezone (UTC would turn 8:30 PM into 1:30 AM). */
+export const demoTimeZone = "America/New_York";
+
+export const demoRepoUrl = "https://github.com/gioguarin/Vinyl-night2";
 
 export interface DemoArtist {
   id: string;
@@ -28,8 +27,9 @@ export interface DemoEvent {
   startsAt: string;
   status: "upcoming" | "ended";
   rsvpCount: number;
+  playlistUrl?: string;
   artists: DemoArtist[];
-  tracks: DemoTrack[];
+  tracks: TrackView[];
 }
 
 export const demoEvents: DemoEvent[] = [
@@ -65,6 +65,8 @@ export const demoEvents: DemoEvent[] = [
     startsAt: "2026-06-21T00:00:00Z",
     status: "ended",
     rsvpCount: 9,
+    // Stand-in for the exported playlist: a search never 404s, unlike a fake playlist id.
+    playlistUrl: "https://open.spotify.com/search/motown%20soul%20classics",
     artists: [],
     tracks: [
       { id: "t1", title: "I Want You Back", artist: "The Jackson 5", album: "Diana Ross Presents The Jackson 5", recognizedAt: "2026-06-21T00:34:00Z" },

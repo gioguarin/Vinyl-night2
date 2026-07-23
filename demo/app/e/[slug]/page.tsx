@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import TrackList from "@/components/TrackList";
-import { demoEvents, getDemoEvent } from "@/lib/demo-fixtures";
+import { demoEvents, demoTimeZone, getDemoEvent } from "@/lib/demo-fixtures";
 
 export const dynamicParams = false;
 
@@ -24,6 +24,7 @@ function fmtWhen(d: Date) {
     day: "numeric",
     hour: "numeric",
     minute: "2-digit",
+    timeZone: demoTimeZone,
   });
 }
 
@@ -54,7 +55,21 @@ export default async function EventPage({ params }: Props) {
           <p className="mb-3 font-mono text-xs uppercase tracking-[0.25em] text-muted">
             The set log · {event.tracks.length} records
           </p>
-          <TrackList tracks={event.tracks} emptyText="No records made the log this time." />
+          {event.playlistUrl && (
+            <a
+              href={event.playlistUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="mb-4 inline-block rounded-lg bg-amber px-4 py-2 text-sm font-medium text-[color:var(--bg)]"
+            >
+              Open the playlist ↗
+            </a>
+          )}
+          <TrackList
+            tracks={event.tracks}
+            emptyText="No records made the log this time."
+            timeZone={demoTimeZone}
+          />
         </section>
       )}
 

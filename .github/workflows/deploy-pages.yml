@@ -1,21 +1,21 @@
 name: Deploy static demo to GitHub Pages
 
+# Pages is configured as "Deploy from a branch": main /docs. This workflow
+# builds the static demo and commits the output to docs/ on main.
 on:
   push:
-    branches: [main]
+    branches: [main, claude/new-session-j0mvol]
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-and-publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,23 +25,23 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx prisma generate
-      - id: pages
-        uses: actions/configure-pages@v5
-        with:
-          enablement: true
       - run: scripts/build-demo.sh
         env:
-          PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: .demo-build/out
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          PAGES_BASE_PATH: /${{ github.event.repository.name }}
+      - name: Commit demo to main:/docs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git worktree add ../pages-publish origin/main
+          cd ../pages-publish
+          git checkout -B main origin/main
+          rm -rf docs
+          cp -a "$GITHUB_WORKSPACE/.demo-build/out" docs
+          git add -A docs
+          if git diff --cached --quiet; then
+            echo "Demo unchanged; nothing to publish."
+          else
+            git commit -m "Publish static demo to docs/ [skip ci]"
+            git push origin main
+          fi

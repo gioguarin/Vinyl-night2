@@ -53,7 +53,7 @@ SSE + the in-process event bus want a **persistent Node host** (Linode box, Fly,
 
 ### GitHub Pages (static demo)
 
-GitHub Pages can't run the server side (API routes, SQLite, SSE), so `.github/workflows/deploy-pages.yml` publishes a **static demo** instead: the public pages rendered from fixture data in `src/lib/demo-fixtures.ts`, with the host console and APIs stripped. It deploys automatically on every push to `main` (first run auto-enables Pages). Build it locally with `scripts/build-demo.sh` → `.demo-build/out`.
+GitHub Pages can't run the server side (API routes, SQLite, SSE), so `.github/workflows/deploy-pages.yml` publishes a **static demo** instead: the public pages rendered from fixture data in `src/lib/demo-fixtures.ts`, with the host console and APIs stripped. Pages is configured to serve the `docs/` folder on `main`; the workflow builds the demo on every push and commits the output there. Build it locally with `scripts/build-demo.sh` → `.demo-build/out`.
 
 ## Working on it with Claude Code
 

@@ -1,16 +1,21 @@
 import Link from "next/link";
 import Vinyl from "@/components/Vinyl";
-import { demoEvents } from "@/lib/demo-fixtures";
+import { demoEvents, demoRepoUrl, demoTimeZone } from "@/lib/demo-fixtures";
 
 function fmtDate(d: Date) {
   return d.toLocaleDateString("en-US", {
     weekday: "short",
     month: "short",
     day: "numeric",
+    timeZone: demoTimeZone,
   });
 }
 function fmtTime(d: Date) {
-  return d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+  return d.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    timeZone: demoTimeZone,
+  });
 }
 
 export default function Home() {
@@ -32,7 +37,7 @@ export default function Home() {
           </p>
           <div className="mt-6 flex gap-3">
             <a
-              href="https://github.com/gioguarin/Vinyl-night2"
+              href={demoRepoUrl}
               className="rounded-lg bg-amber px-4 py-2 text-sm font-medium text-[color:var(--bg)]"
             >
               Run it yourself ↗
@@ -45,6 +50,11 @@ export default function Home() {
         <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-muted">
           Upcoming nights
         </p>
+        {upcoming.length === 0 ? (
+          <p className="rounded-2xl border border-line bg-surface p-6 text-sm text-muted">
+            Nothing on the calendar yet. Host one and share the link.
+          </p>
+        ) : (
         <ul className="divide-y divide-line rounded-2xl border border-line bg-surface">
           {upcoming.map((e) => (
             <li key={e.slug}>
@@ -65,6 +75,7 @@ export default function Home() {
             </li>
           ))}
         </ul>
+        )}
       </section>
 
       <section className="mt-12">
